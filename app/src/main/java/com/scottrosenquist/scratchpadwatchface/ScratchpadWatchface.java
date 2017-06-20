@@ -94,7 +94,6 @@ public class ScratchpadWatchface extends CanvasWatchFaceService {
         private static final float CENTER_GAP_AND_CIRCLE_RADIUS = 4f;
 
         private static final int SHADOW_RADIUS = 6;
-        private final Rect mPeekCardBounds = new Rect();
         /* Handler to update the time once a second in interactive mode. */
         private final Handler mUpdateTimeHandler = new EngineHandler(this);
         private Calendar mCalendar;
@@ -132,9 +131,6 @@ public class ScratchpadWatchface extends CanvasWatchFaceService {
             super.onCreate(holder);
 
             setWatchFaceStyle(new WatchFaceStyle.Builder(ScratchpadWatchface.this)
-                    .setCardPeekMode(WatchFaceStyle.PEEK_MODE_SHORT)
-                    .setBackgroundVisibility(WatchFaceStyle.BACKGROUND_VISIBILITY_INTERRUPTIVE)
-                    .setShowSystemUiTime(false)
                     .setAcceptsTapEvents(true)
                     .build());
 
@@ -436,11 +432,6 @@ public class ScratchpadWatchface extends CanvasWatchFaceService {
 
             /* Restore the canvas' original orientation. */
             canvas.restore();
-
-            /* Draw rectangle behind peek card in ambient mode to improve readability. */
-            if (mAmbient) {
-                canvas.drawRect(mPeekCardBounds, mBackgroundPaint);
-            }
         }
 
         @Override
@@ -458,12 +449,6 @@ public class ScratchpadWatchface extends CanvasWatchFaceService {
 
             /* Check and trigger whether or not timer should be running (only in active mode). */
             updateTimer();
-        }
-
-        @Override
-        public void onPeekCardPositionUpdate(Rect rect) {
-            super.onPeekCardPositionUpdate(rect);
-            mPeekCardBounds.set(rect);
         }
 
         private void registerReceiver() {
